@@ -6,19 +6,19 @@ from enum import Enum
 import csv
 from pathlib import Path
 from collections import namedtuple
-Politician = namedtuple('Politician', ['picture_name', 'emotion', 'emotion_strength'])
-
-
-
+import os
+from utilities import Politician
 app = Flask(__name__, static_folder='../static')
 api = Api(app)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 politicians = []
-
+script_dir = os.path.dirname(__file__)
+rel_path = f"..{os.sep}static{os.sep}db.csv"
+abs_file_path = os.path.join(script_dir, rel_path)
 # TODO move to a sqlite db or something more sensible. 
-with open('../static/db.csv') as csv_file:
+with open(abs_file_path) as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     line_count = 0
     for row in csv_reader:
